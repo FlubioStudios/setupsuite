@@ -13,7 +13,7 @@ adduser --disabled-password --gecos "" flubi0
 groupAdd sshUserusermod -aG sshUser flubi0
 update-alternatives --config editorecho 'flubi0 ALL=(ALL:ALL) ALL' | sudo EDITOR='tee -a' visudosu flubi0
 mkdir /home/flubi0/.ssh/cat >> /home/flubi0/.ssh/authorized_keys << EOF
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5G5f2XmkW/Zmv3G6YvrL4789hjYvidIWsVv7VjB2wAhrmH3gYzvI3SunBjVBzH/bgvEWffc21rKygAop4WSvZ6lF/J+Kipk7vu/yQN5RfcawJH/jv6J+J55yUViAYi+vqXTbkBzOlIY+WIBddKxiPrRVCQtQjcaN8HZwkpMXjUcJz9dIyUR+lQpFr9wCBr/sStKgTOxopMOIb9zsfNWB444ec6HgjgLLVd+SdD3g5fsvZR5dWWs9/dcCJSYRaoDD+ggzTXHSWO7sXKgSfq+hhQnizCZHPiDS69sMabZlIgwSOwXpVA/w5+nlYLsKcaPIoulAF2qU6v/3AQXQK7uRF
+ssh-rsa {{sshKey}}
 EOF
 chown -R flubi0:flubi0 /home/flubi0/.ssh
 chmod 700 /home/flubi0/.ssh
