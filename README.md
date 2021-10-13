@@ -1,6 +1,6 @@
 # FlubioStudios SetupSuite
 
-The SetupSuite was built to setup servers faster and more efficiently. In addtion it installs Chronos and configures it to backup all critical services the suite configures the server to use.
+The SetupSuite was built to setup servers faster and more efficiently. In addition it installs Chronos and configures it to backup all critical services the suite configures the server to use.
 
   
 
