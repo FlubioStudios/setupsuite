@@ -1,11 +1,44 @@
 # FlubioStudios SetupSuite
-The SetupSuite was built to setup servers faster and more efficiantly
+
+The SetupSuite was built to setup servers faster and more efficiently. In addtion it installs Chronos and configures it to backup all critical services the suite configures the server to use.
+
+  
 
 ## Features
 
-### -initial setup
+ - initial ServerSetup (configure and secure)
+ - configure server for a specific purpose (web, build-server, git-server, layered-proxy)
+ - server config made easy by own scripting language
+
+## The Config-Language
+```
+.setup_secure{
+	ssh_user: "flubio",
+	user_ssh_rsa: "xxx",
+	ssh_port: 1101
+  .configuration{
+    type: "web"
+  }
+  .firewall{
+    open_ports: [
+      1101,
+      443
+    ]
+  }
+}
+
+.install_tools{
+  tools: [
+    "htop",
+    "nano",
+    "git"
+  ]
+}
+```
+  
 
 ## References
+
 ```shell
 #!bin/bash
 echo "Setting up server..."
