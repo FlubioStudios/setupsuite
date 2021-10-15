@@ -15,10 +15,10 @@ The SetupSuite was built to setup servers faster and more efficiently. In additi
 .setup_secure{
 	ssh_user: "flubio",
 	user_ssh_rsa: "xxx",
-	ssh_port: 1101
+	ssh_port: 1101,
   .configuration{
     type: "web"
-  }
+  },
   .firewall{
     open_ports: [
       1101,
@@ -38,6 +38,11 @@ The SetupSuite was built to setup servers faster and more efficiently. In additi
   
 
 ## References
+
+Book about building Codeinterpreters
+```
+https://craftinginterpreters.com/contents.html
+```
 
 ```shell
 #!bin/bash
