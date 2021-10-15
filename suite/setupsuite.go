@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"os/user"
 	"runtime"
+	"suite/suite/config"
 )
 
 func main() {
@@ -12,7 +14,6 @@ func main() {
 		fmt.Println("The LINUX setup suite is only to be used on linux based systems")
 	} else {
 		fmt.Println("Starting Serversetup...")
-		fmt.Println(len(os.Args), os.Args)
 		execute()
 	}
 }
@@ -20,19 +21,21 @@ func main() {
 func execute() {
 
 	// let's try the whoami command here
-	out, err := exec.Command("whoami").Output()
+	user, err := user.Current()
 	if err != nil {
-		fmt.Printf("%s", err)
+		panic(err)
 	}
-	output := string(out[:])
-	if output != "root" {
+	if user.Username != "root" {
 		fmt.Println("The Setupsuite can only be run as root")
+		os.Exit(1)
 	}
+
+	config.ReadConfig()
 
 	// here we perform the pwd command.
 	// we can store the output of this in our out variable
 	// and catch any errors in err
-	out, err = exec.Command("ls").Output()
+	out, err := exec.Command("ls").Output()
 
 	// if there is an error with our execution
 	// handle it here
@@ -44,7 +47,7 @@ func execute() {
 	// this to a string or else we will see garbage printed out in our console
 	// this is how we convert it to a string
 	fmt.Println("\"ls\" Successfully Executed")
-	output = string(out[:])
+	output := string(out[:])
 	fmt.Println(output)
 
 }
