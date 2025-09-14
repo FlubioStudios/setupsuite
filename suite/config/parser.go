@@ -2,7 +2,9 @@ package config
 
 import (
 	"bufio"
+	"fmt"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 )
@@ -195,6 +197,20 @@ func CreateDefaultConfig(serverType string, configPath string) error {
 		configContent = getBuildServerConfig()
 	default:
 		configContent = getBasicServerConfig()
+	}
+
+	// Create parent directory if it doesn't exist
+	configDir := filepath.Dir(configPath)
+	if _, err := os.Stat(configDir); os.IsNotExist(err) {
+		fmt.Printf("Creating config directory: %s\n", configDir)
+		err = os.MkdirAll(configDir, 0755)
+		if err != nil {
+			if os.IsPermission(err) {
+				return fmt.Errorf("permission denied creating config directory %s (try running with sudo or use a different path with -config flag): %v", configDir, err)
+			}
+			return fmt.Errorf("failed to create config directory %s: %v", configDir, err)
+		}
+		fmt.Printf("Config directory created successfully\n")
 	}
 
 	file, err := os.Create(configPath)

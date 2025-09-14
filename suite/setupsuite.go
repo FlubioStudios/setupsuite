@@ -15,9 +15,16 @@ func main() {
 		configPath   = flag.String("config", "/etc/setupsuite/config.sscfg", "Path to configuration file")
 		serverType   = flag.String("type", "", "Server type (web, database, docker, proxy, build)")
 		generateOnly = flag.Bool("generate", false, "Generate default config and exit")
+		verbose      = flag.Bool("verbose", false, "Enable verbose logging of all file operations and command outputs")
 		help         = flag.Bool("help", false, "Show help")
 	)
 	flag.Parse()
+
+	// Initialize logging
+	if err := InitLogger(*verbose); err != nil {
+		fmt.Printf("Warning: Could not initialize logging: %v\n", err)
+	}
+	defer CloseLogger()
 
 	if *help {
 		showHelp()
@@ -62,11 +69,13 @@ func showHelp() {
 	fmt.Println("  -config string    Path to configuration file (default: /etc/setupsuite/config.sscfg)")
 	fmt.Println("  -type string      Server type for config generation (web, database, docker, proxy, build)")
 	fmt.Println("  -generate         Generate default config file and exit")
+	fmt.Println("  -verbose          Enable verbose logging of all file operations and command outputs")
 	fmt.Println("  -help             Show this help message")
 	fmt.Println("")
 	fmt.Println("Examples:")
 	fmt.Println("  setupsuite -generate -type web                    # Generate web server config")
 	fmt.Println("  setupsuite -config /path/to/custom.sscfg          # Use custom config")
+	fmt.Println("  setupsuite -verbose                               # Run with verbose logging")
 	fmt.Println("  setupsuite                                        # Use default config")
 	fmt.Println("")
 	fmt.Println("Server Types:")
