@@ -70,3 +70,54 @@ $RECYCLE.BIN/
 
 # Custom rules (everything added below won't be overriden by 'Generate .gitignore File' if you use 'Update' option)
 
+# SetupSuite specific ignores
+# Compiled binaries
+setupsuite
+suite/suite
+*.bin
+
+# IDE directories (additional coverage)
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Test files and temporary data
+test_*.sscfg
+/tmp/
+*.tmp
+*.temp
+
+# Build artifacts
+dist/
+build/
+*.tar.gz
+*.zip
+*.deb
+*.rpm
+
+# Configuration files with secrets
+*.key
+*.pem
+*.crt
+secrets.sscfg
+production.sscfg
+
+# OS specific
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+
+# Runtime files
+*.pid
+*.log
+nohup.out
+
+# Development environment
+.env
+.env.local
+.env.*.local

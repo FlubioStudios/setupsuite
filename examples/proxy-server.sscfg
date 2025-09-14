@@ -1,0 +1,30 @@
+.setup_secure{
+	ssh_user: "proxyadmin",
+	user_ssh_rsa: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC... your-key-here",
+	ssh_port: 22022,
+	.configuration{
+		type: "proxy",
+		domain: "proxy.yourdomain.com",
+		email: "admin@yourdomain.com"
+	},
+	.firewall{
+		open_ports: [
+			22022,
+			80,
+			443
+		]
+	}
+}
+
+.install_tools{
+	tools: [
+		"nginx",
+		"certbot",
+		"python3-certbot-nginx",
+		"ufw",
+		"htop",
+		"curl",
+		"fail2ban",
+		"unattended-upgrades"
+	]
+}

@@ -1,0 +1,22 @@
+.setup_secure{
+	ssh_user: "flubio",
+	user_ssh_rsa: "xxx",
+	ssh_port: 1101,
+  .configuration{
+    type: "web"
+  },
+  .firewall{
+    open_ports: [
+      1101,
+      443
+    ]
+  }
+}
+
+.install_tools{
+  tools: [
+    "htop",
+    "nano",
+    "git"
+  ]
+}

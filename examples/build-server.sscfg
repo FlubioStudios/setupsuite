@@ -1,0 +1,37 @@
+.setup_secure{
+	ssh_user: "buildadmin",
+	user_ssh_rsa: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC... your-key-here",
+	ssh_port: 22022,
+	.configuration{
+		type: "build"
+	},
+	.firewall{
+		open_ports: [
+			22022,
+			80,
+			443,
+			8080,
+			9000
+		]
+	}
+}
+
+.install_tools{
+	tools: [
+		"git",
+		"nodejs",
+		"npm",
+		"python3",
+		"python3-pip",
+		"build-essential",
+		"docker.io",
+		"docker-compose",
+		"openjdk-17-jdk",
+		"maven",
+		"ufw",
+		"htop",
+		"curl",
+		"fail2ban",
+		"unattended-upgrades"
+	]
+}

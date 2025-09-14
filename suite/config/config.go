@@ -1,10 +1,11 @@
 package config
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
-	"strings"
-	"suite/suite/utils"
+	"log"
+	"os"
 )
 
 func check(e error) {
@@ -13,43 +14,46 @@ func check(e error) {
 	}
 }
 
-func ReadConfig() {
-	fmt.Println("I read")
-	dat, err := ioutil.ReadFile("/etc/setupsuite/config.sscfg")
-	check(err)
-	fmt.Println("//////////////////////!")
-	fmt.Print(string(dat))
-	fmt.Println("//////////////////////!")
+func ReadConfig(configPath string) (*ServerConfig, error) {
+	path := "/etc/setupsuite"
+	config := configPath
 
-	//split config into lines
-	configlines := strings.Fields(string(dat))
-
-	//reverse configlines
-	for i, j := 0, len(configlines)-1; i < j; i, j = i+1, j-1 {
-		configlines[i], configlines[j] = configlines[j], configlines[i]
+	if configPath == "" {
+		config = path + "/config.sscfg"
 	}
 
-	length := len(configlines)
-
-	for length > 0 {
-		line := configlines[length-1]
-		fmt.Println("Index: ", length)
-		//check if it's a config-group
-		if strings.HasPrefix(line, ".") {
-			if strings.HasSuffix(line, "{") {
-				//replace config group indicators
-				replaced := strings.Replace(line, ".", "", -1)
-				//find ending }
-				for x := len(configlines) - 1; x < utils.FindIndex(configlines, line, 0) && x > 0; x-- {
-					if configlines[x] == "}" {
-						fmt.Println("line below: ", line, ": ", configlines[x])
-					}
-				}
-				fmt.Println("Start of config group: ", strings.Replace(replaced, "{", "", -1))
-			}
+	// Create config directory if it doesn't exist
+	if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
+		fmt.Println("creating config dir")
+		err := os.Mkdir(path, os.ModePerm)
+		if err != nil {
+			log.Println(err)
 		}
-		fmt.Println(configlines[length-1])
-		length--
 	}
 
+	// Create default config file if it doesn't exist
+	if _, err := os.Stat(config); errors.Is(err, os.ErrNotExist) {
+		fmt.Println("creating default config")
+		err := CreateDefaultConfig("basic", config)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create default config: %v", err)
+		}
+		fmt.Printf("Default config created at %s. Please edit it and run again.\n", config)
+		os.Exit(0)
+	}
+
+	fmt.Println("Reading config from:", config)
+	dat, err := ioutil.ReadFile(config)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read config file: %v", err)
+	}
+
+	// Parse the configuration
+	serverConfig, err := ParseConfig(string(dat))
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse config: %v", err)
+	}
+
+	fmt.Println("Configuration loaded successfully")
+	return serverConfig, nil
 }

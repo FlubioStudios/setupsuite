@@ -1,0 +1,28 @@
+.setup_secure{
+	ssh_user: "dbadmin",
+	user_ssh_rsa: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC... your-key-here",
+	ssh_port: 22022,
+	.configuration{
+		type: "database",
+		db_engine: "mysql"
+	},
+	.firewall{
+		open_ports: [
+			22022,
+			3306
+		]
+	}
+}
+
+.install_tools{
+	tools: [
+		"mysql-server",
+		"mysql-client",
+		"mysql-common",
+		"ufw",
+		"htop",
+		"curl",
+		"fail2ban",
+		"unattended-upgrades"
+	]
+}

@@ -1,0 +1,30 @@
+.setup_secure{
+	ssh_user: "dockeradmin",
+	user_ssh_rsa: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC... your-key-here",
+	ssh_port: 22022,
+	.configuration{
+		type: "docker"
+	},
+	.firewall{
+		open_ports: [
+			22022,
+			80,
+			443,
+			2376
+		]
+	}
+}
+
+.install_tools{
+	tools: [
+		"docker.io",
+		"docker-compose",
+		"docker-buildx",
+		"ufw",
+		"htop",
+		"curl",
+		"git",
+		"fail2ban",
+		"unattended-upgrades"
+	]
+}

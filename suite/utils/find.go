@@ -1,10 +1,10 @@
 package utils
 
 func FindIndex(ar []string, x string, start int) int {
-	for i, n := range ar[start] {
-		if x == string(n) {
+	for i := start; i < len(ar); i++ {
+		if ar[i] == x {
 			return i
 		}
 	}
-	return len(ar)
+	return -1
 }
