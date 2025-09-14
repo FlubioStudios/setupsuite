@@ -51,7 +51,15 @@ func parseSetupSecure(lines []string, startIndex int) (*SetupSecure, int) {
 		if strings.Contains(line, ":") && !strings.HasPrefix(line, ".") {
 			parts := strings.SplitN(line, ":", 2)
 			key := strings.TrimSpace(parts[0])
-			value := strings.TrimSpace(strings.Trim(parts[1], `",`))
+			value := strings.TrimSpace(parts[1])
+			// Remove quotes and trailing commas more robustly
+			value = strings.Trim(value, " \t\r\n") // Remove whitespace
+			if strings.HasPrefix(value, `"`) && strings.HasSuffix(value, `",`) {
+				value = value[1 : len(value)-2] // Remove quote and comma
+			} else if strings.HasPrefix(value, `"`) && strings.HasSuffix(value, `"`) {
+				value = value[1 : len(value)-1] // Remove quotes
+			}
+			value = strings.TrimSuffix(value, ",") // Remove any remaining trailing comma
 
 			switch key {
 			case "ssh_user":
@@ -95,7 +103,15 @@ func parseConfiguration(lines []string, startIndex int) (*Config, int) {
 		if strings.Contains(line, ":") {
 			parts := strings.SplitN(line, ":", 2)
 			key := strings.TrimSpace(parts[0])
-			value := strings.TrimSpace(strings.Trim(parts[1], `",`))
+			value := strings.TrimSpace(parts[1])
+			// Remove quotes and trailing commas more robustly
+			value = strings.Trim(value, " \t\r\n") // Remove whitespace
+			if strings.HasPrefix(value, `"`) && strings.HasSuffix(value, `",`) {
+				value = value[1 : len(value)-2] // Remove quote and comma
+			} else if strings.HasPrefix(value, `"`) && strings.HasSuffix(value, `"`) {
+				value = value[1 : len(value)-1] // Remove quotes
+			}
+			value = strings.TrimSuffix(value, ",") // Remove any remaining trailing comma
 
 			switch key {
 			case "type":
@@ -166,7 +182,15 @@ func parseInstallTools(lines []string, startIndex int) (*InstallTools, int) {
 					break
 				}
 				if arrayLine != "[" && arrayLine != "" {
-					tool := strings.Trim(arrayLine, `",`)
+					tool := strings.TrimSpace(arrayLine)
+					// Remove quotes and trailing commas more robustly
+					tool = strings.Trim(tool, " \t\r\n") // Remove whitespace
+					if strings.HasPrefix(tool, `"`) && strings.HasSuffix(tool, `",`) {
+						tool = tool[1 : len(tool)-2] // Remove quote and comma
+					} else if strings.HasPrefix(tool, `"`) && strings.HasSuffix(tool, `"`) {
+						tool = tool[1 : len(tool)-1] // Remove quotes
+					}
+					tool = strings.TrimSuffix(tool, ",") // Remove any remaining trailing comma
 					if tool != "" {
 						installTools.Tools = append(installTools.Tools, tool)
 					}
