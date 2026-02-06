@@ -96,7 +96,7 @@ func parseConfiguration(lines []string, startIndex int) (*Config, int) {
 
 	for i < len(lines) {
 		line := strings.TrimSpace(lines[i])
-		if line == "}" {
+		if line == "}" || line == "}," {
 			break
 		}
 
